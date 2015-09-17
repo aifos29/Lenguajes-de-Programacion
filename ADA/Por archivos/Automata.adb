@@ -1,4 +1,5 @@
-with Gnat.IO;use GNAT.IO;
+with Text_IO,Sequential_IO,Direct_IO;
+use Text_IO;
 with Automata;
 
 package body Automata is
@@ -36,6 +37,9 @@ procedure Proceso(T:Integer;B:Integer) is
    M:Integer;
    N:Integer;
    P:Integer;
+      --Imagen--
+      Imagen:File_Type;
+     Guardar:String:=Integer'Image(0);
    --Funciones que utiliza el programa--
    --Recibe una tripleta, que son los valores de los vecinos
    --y busca una similitud con los array de estados--
@@ -107,21 +111,17 @@ procedure Proceso(T:Integer;B:Integer) is
 
    end ConvertDecimal;
 begin
-   --Solicitud de número--
-   Put("Bienvenido a su automata celular");
-   New_Line;
-   --Ciclo para evitar que el número ingresado sea mayor que 256--
---   while X>255 loop
---   Put("Podría ingresar el número que desea");
---   Get(X);
---   end loop;
-   --Llama a la funcion para convertir a decimal
+
    P:=ConvertDecimal;
-   --Solicitud de tiempo--
---   Put("Ingrese el tiempo: ");
---   Get(T);
-   --Toma el tiempo, lo multiplica por dos para obtener el tamaño y le suma uno para realizar los calculos de manera mas exacta
-   --T:=(T*2)+1;
+      --Abre variable para la imagen--
+      open (Imagen,out_File,"Automata.pnm");
+      Put(Imagen,"P1");
+      Put(Imagen,ASCII.LF);
+      Put(Imagen,"# feep.pbm");
+      Put(Imagen,ASCII.LF);
+      Put(Imagen,Integer'Image(T) & Integer'Image(T/2));
+      Put(Imagen,ASCII.LF);
+
 
    --Inicializa los ciclos de 1 a T con 0.
    for P in 1..T loop
@@ -131,8 +131,9 @@ begin
    --A la mitad del arreglo más uno le agrega un 1
    Estado_Actual((T/2)+1):=1;
    --Imprime el estado actual;
-   for I in 1..T loop
-      Put(Estado_Actual(I));
+      for I in 1..T loop
+      Guardar:=Integer'Image(Estado_Actual(I));
+      Put(Imagen,Guardar);
    end loop;
    --Realiza el ciclo la cantidad de veces ingresadas por el usuario
    for M in 1..(T/2) loop
@@ -158,9 +159,9 @@ begin
    end loop;
 
    --Muestra el nuevo array
-    New_Line;
+    Put(Imagen,ASCII.LF);
       for I in 1..T loop
-      Put(Cambio(I));
+      Put(Imagen,Integer'Image(Cambio(I)));
     end loop;
       --Reemplazo Estado_Actual por cambio
       --Y reinicio cambio;
