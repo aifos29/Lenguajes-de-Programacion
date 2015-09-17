@@ -21,18 +21,11 @@ procedure Proceso(T:Integer;B:Integer) is
    type Valores is array (1..T) of Integer;
    Estado_Actual:Valores;
    Cambio:Valores;
-
-
-
    --Variables para realizar la conversión de decimal a binario--
    Binario: array(1..8) of Integer:=(0,0,0,0,0,0,0,0);
    X:Integer:=B;
    V:Integer:=8;
-
-
-
-
-   --Enteros para los ciclos.Funcionan como indices--
+  --Enteros para los ciclos.Funcionan como indices--
    I:Integer;
    M:Integer;
    N:Integer;
@@ -99,7 +92,7 @@ procedure Proceso(T:Integer;B:Integer) is
    --Cuando termina el ciclo, le asigna a binario el cociente de x, ya se 0 o 1
    function ConvertDecimal return Integer is
    begin
-      while X>0 loop
+      while X>1 loop
       Binario(V):= X mod 2;
       X:= X/2;
       V:=V-1;
@@ -114,7 +107,7 @@ begin
 
    P:=ConvertDecimal;
       --Abre variable para la imagen--
-      open (Imagen,out_File,"Automata.pnm");
+      Create (Imagen,out_File,"Automata.pnm");
       Put(Imagen,"P1");
       Put(Imagen,ASCII.LF);
       Put(Imagen,"# feep.pbm");
